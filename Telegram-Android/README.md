@@ -5,6 +5,13 @@
 
 - Get *[Telegram-Android](https://github.com/DrKLO/Telegram)* source code
 
+
+- Switch to e222fded6cca5ace3649be6f18b55f526311bc79 
+
+```
+git checkout e222fded6cca5ace3649be6f18b55f526311bc79
+```
+
 - patch
 
 - build, see [build Telegram-Android](https://github.com/DrKLO/Telegram/blob/master/README.md), and google
