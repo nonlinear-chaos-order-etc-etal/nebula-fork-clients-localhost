@@ -19,6 +19,6 @@ If you want to connect to your own server, you can modify the following code:
 Telegram-FOSS/ConnectionManager.cpp.diff
 L11
 
-+    std::string _nebulaChatServer("47.100.25.99");
++    std::string _nebulaChatServer("47.254.178.175");
 
 ```

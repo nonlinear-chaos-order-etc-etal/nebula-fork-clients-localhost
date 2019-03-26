@@ -36,23 +36,23 @@ index 7f526549..a17dd021 100644
                  ]]];
 +#else
 +                [_context setSeedAddressSetForDatacenterWithId:1 seedAddressSet:[[MTDatacenterAddressSet alloc] initWithAddressList:@[
-+                    [[MTDatacenterAddress alloc] initWithIp:@"47.100.25.99" port:12345 preferForMedia:false restrictToTcp:false cdn:false preferForProxy:false secret:nil],
++                    [[MTDatacenterAddress alloc] initWithIp:@"47.254.178.175" port:12345 preferForMedia:false restrictToTcp:false cdn:false preferForProxy:false secret:nil],
 +                    ]]];
 +                
 +                [_context setSeedAddressSetForDatacenterWithId:2 seedAddressSet:[[MTDatacenterAddressSet alloc] initWithAddressList:@[
-+                    [[MTDatacenterAddress alloc] initWithIp:@"47.100.25.99" port:12345 preferForMedia:false restrictToTcp:false cdn:false preferForProxy:false secret:nil],
++                    [[MTDatacenterAddress alloc] initWithIp:@"47.254.178.175" port:12345 preferForMedia:false restrictToTcp:false cdn:false preferForProxy:false secret:nil],
 +                    ]]];
 +                
 +                [_context setSeedAddressSetForDatacenterWithId:3 seedAddressSet:[[MTDatacenterAddressSet alloc] initWithAddressList:@[
-+                    [[MTDatacenterAddress alloc] initWithIp:@"47.100.25.99" port:12345 preferForMedia:false restrictToTcp:false cdn:false preferForProxy:false secret:nil],
++                    [[MTDatacenterAddress alloc] initWithIp:@"47.254.178.175" port:12345 preferForMedia:false restrictToTcp:false cdn:false preferForProxy:false secret:nil],
 +                    ]]];
 +                
 +                [_context setSeedAddressSetForDatacenterWithId:4 seedAddressSet:[[MTDatacenterAddressSet alloc] initWithAddressList:@[
-+                    [[MTDatacenterAddress alloc] initWithIp:@"47.100.25.99" port:12345 preferForMedia:false restrictToTcp:false cdn:false preferForProxy:false secret:nil],
++                    [[MTDatacenterAddress alloc] initWithIp:@"47.254.178.175" port:12345 preferForMedia:false restrictToTcp:false cdn:false preferForProxy:false secret:nil],
 +                    ]]];
 +                
 +                [_context setSeedAddressSetForDatacenterWithId:5 seedAddressSet:[[MTDatacenterAddressSet alloc] initWithAddressList:@[
-+                    [[MTDatacenterAddress alloc] initWithIp:@"47.100.25.99" port:12345 preferForMedia:false restrictToTcp:false cdn:false preferForProxy:false secret:nil],
++                    [[MTDatacenterAddress alloc] initWithIp:@"47.254.178.175" port:12345 preferForMedia:false restrictToTcp:false cdn:false preferForProxy:false secret:nil],
 +                    ]]];
 +#endif
              }];
