@@ -26,6 +26,6 @@ If you want to connect to your own server, you can modify the following code:
 Telegram-Android/ConnectionManager.cpp.diff
 L10
 
-+    std::string _nebulaChatServer("47.254.178.175");
++    std::string _nebulaChatServer("47.103.102.219");
 
 ```
