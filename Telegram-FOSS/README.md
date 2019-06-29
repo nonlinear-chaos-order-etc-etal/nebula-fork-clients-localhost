@@ -5,6 +5,12 @@
 
 - Get *[Telegram-FOSS](https://github.com/Telegram-FOSS-Team/Telegram-FOSS)* source code
 
+- Switch to a655fde98089ad949f1d131cb6d627d70bb5159e 
+
+  ```
+  git checkout a655fde98089ad949f1d131cb6d627d70bb5159e
+  ```
+
 - patch
 
 - build, see [build Telegram-FOSS](https://github.com/Telegram-FOSS-Team/Telegram-FOSS/blob/master/README.md), and google
