@@ -38,7 +38,7 @@ jobs:
     steps:
       - name: Get repository name.
         run: |
-            echo ::set-env name=CURRENT_REPO_NAME::${GITHUB_REPOSITORY##*/}"
+            echo ::set-env name=CURRENT_REPO_NAME::${GITHUB_REPOSITORY##*/}
             echo ::set-env name=REPO_TDESKTOP_NAME::tdesktop
             
 
