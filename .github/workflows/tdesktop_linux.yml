@@ -66,6 +66,7 @@ jobs:
           cd ..
           pwd
           ls -la
+          ls -la clients
           mv $REPO_TDESKTOP_NAME temp
           mkdir $REPO_TDESKTOP_NAME
           mv temp $REPO_TDESKTOP_NAME/$REPO_TDESKTOP_NAME
