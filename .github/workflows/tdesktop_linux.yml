@@ -499,6 +499,31 @@ jobs:
       - name: Telegram Desktop build.
         if: env.ONLY_CACHE == 'false'
         run: |
+          pushd $LibrariesPath
+          git clone $GIT/nebula-chat-fork/clients nebula-clients
+          popd
+          
+          cd $REPO_TDESKTOP_NAME/
+          
+          echo "pwd"
+          pwd
+          echo "ls -lha"
+          ls -lha
+          echo "ls -lha $LibrariesPath/nebula-clients/tdesktop"
+          ls -lha $LibrariesPath/nebula-clients/tdesktop
+          
+          echo "patching"
+          
+          patch -p1 $LibrariesPath/nebula-clients/tdesktop/config.h.diff
+          patch -p1 $LibrariesPath/nebula-clients/tdesktop/dc_options.cpp.diff
+          patch -p1 $LibrariesPath/nebula-clients/tdesktop/launcher_linux.cpp.diff
+          patch -p1 $LibrariesPath/nebula-clients/tdesktop/launcher_mac.mm.diff
+          patch -p1 $LibrariesPath/nebula-clients/tdesktop/launcher_win.cpp.diff
+          patch -p1 $LibrariesPath/nebula-clients/tdesktop/telegram_mac.gypi.diff
+          patch -p1 $LibrariesPath/nebula-clients/tdesktop/update_checker.cpp.diff
+          
+          echo "patched"
+          
           cd $REPO_TDESKTOP_NAME/Telegram
 
           DEFINE=""
