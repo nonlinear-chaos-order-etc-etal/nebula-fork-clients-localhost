@@ -505,6 +505,14 @@ jobs:
           
           cd $REPO_TDESKTOP_NAME/
           
+          echo "checking out commit id for Nebula patches"
+          git checkout dc8abc74ed4d72a73315550b91283ff1f2e44199
+          
+          git submodule init
+          git submodule sync
+          git submodule update
+          
+          
           echo "pwd"
           pwd
           echo "ls -lha"
