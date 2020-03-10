@@ -64,6 +64,8 @@ jobs:
         shell: bash
         run: |
           cd ..
+          pwd
+          ls -la
           mv $REPO_TDESKTOP_NAME temp
           mkdir $REPO_TDESKTOP_NAME
           mv temp $REPO_TDESKTOP_NAME/$REPO_TDESKTOP_NAME
