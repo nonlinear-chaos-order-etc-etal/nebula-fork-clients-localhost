@@ -69,6 +69,7 @@ jobs:
           ls -la $CURRENT_REPO_NAME
           mv $CURRENT_REPO_NAME temp
           mkdir $REPO_TDESKTOP_NAME
+          ln -s $REPO_TDESKTOP_NAME $CURRENT_REPO_NAME
           mv temp $REPO_TDESKTOP_NAME/$REPO_TDESKTOP_NAME
           cd $REPO_TDESKTOP_NAME
 
