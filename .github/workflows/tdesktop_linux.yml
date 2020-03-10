@@ -499,9 +499,10 @@ jobs:
       - name: Telegram Desktop build.
         if: env.ONLY_CACHE == 'false'
         run: |
-          pushd $LibrariesPath
+          echo ::set-env name=HomePath::`pwd`
+          cd $LibrariesPath
           git clone $GIT/nebula-chat-fork/clients nebula-clients
-          popd
+          cd $HomePath
           
           cd $REPO_TDESKTOP_NAME/
           
