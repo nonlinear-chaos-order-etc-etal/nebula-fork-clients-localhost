@@ -16,7 +16,8 @@ All client's signIn (signOut) default verify code is *12345*
 
 **TBD (Currently) unsupported systems:**
 
-* TBD GNU/Linux - [![Build Status](https://travis-ci.com/nebula-chat-fork/clients.svg?branch=master)](https://travis-ci.com/nebula-chat-fork/clients)
+* TBD GNU/Linux - [![Build Status - Travis](https://travis-ci.com/nebula-chat-fork/clients.svg?branch=master)](https://travis-ci.com/nebula-chat-fork/clients) [![Build Status](https://github.com/nebula-chat-fork/clients/workflows/tdesktop_linux./badge.svg)](https://github.com/nebula-chat-fork/clients/actions)
+ 
 * TBD Windows - Build status
 * TBD Mac OS X - Build Status
 * TBD CentOS / Fedora / Mageia - Build Status
