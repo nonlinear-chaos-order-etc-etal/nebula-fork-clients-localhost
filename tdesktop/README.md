@@ -17,7 +17,7 @@ git checkout dc8abc74ed4d72a73315550b91283ff1f2e44199
 
 ## Edit your server and port in config.h.diff file
 
-**Default connect to NebulaChat test server.**
+**The default connection is made to NebulaChat test server.**
 
 If you want to connect to your own server, you can modify the following code:
 
