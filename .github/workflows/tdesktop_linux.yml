@@ -42,10 +42,10 @@ jobs:
             echo ::set-env name=REPO_TDESKTOP_NAME::tdesktop
             
 
-      - name: Clone.
+      - name: Clone tdesktop.
         uses: actions/checkout@master
         with:
-          name: nebula-chat-fork-originals/tdesktop
+          repository: nebula-chat-fork-originals/tdesktop
           submodules: recursive
 
       - name: Disable man for further package installs.
