@@ -355,5 +355,5 @@ jobs:
         if: env.UPLOAD_ARTIFACT == 'true'
         name: Upload artifact.
         with:
-          name: Telegram
+          name: NebulaChatDesktopLinux
           path: artifact
