@@ -69,9 +69,15 @@ jobs:
                 exit
             }
             
-            goto label2
-
             echo "pwd: `pwd`"
+            cd ..
+            echo ::set-env name=HomePath::`pwd`
+            mkdir -pv Libraries
+            cd Libraries
+            echo ::set-env name=LibrariesPath::`pwd`
+            cd ..
+
+            goto label2
 
             sudo apt-get install -y software-properties-common aptitude
             sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
@@ -92,8 +98,6 @@ jobs:
 
             echo ::set-env name=MAKE_THREADS_CNT::-j$(nproc)
 
-            cd ..
-            echo ::set-env name=HomePath::`pwd`
 
             echo "pwd: `pwd`"
             git clone --recursive https://github.com/nebula-chat-fork-originals/tdesktop.git 
@@ -103,9 +107,7 @@ jobs:
             git reset --hard
             cd ..
 
-            mkdir Libraries
             cd Libraries
-            echo ::set-env name=LibrariesPath::`pwd`
 
             goto label1
             
@@ -323,6 +325,7 @@ jobs:
             
             label3 label
             
+            mkdir -pv $HomePath/tdesktop/out/Debug/
             cd $HomePath/tdesktop/out/Debug/
             echo 123 > Telegram
 
