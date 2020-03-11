@@ -324,12 +324,24 @@ jobs:
             exit 1
           fi
 
-      - name: Move artifact.
+      - name: Move and gzip the artifact.
         if: env.UPLOAD_ARTIFACT == 'true'
         run: |
           cd $HomePath/tdesktop/out/Debug/
           mkdir artifact
           mv Telegram artifact/
+          cd artifact
+          gzip -9 Telegram
+          filePath="Telegram.gz"
+          if test -f "$filePath"; then
+            echo "Gzipped ok!"
+
+            size=$(stat -c %s "$filePath")
+            echo "File size of ${filePath}: ${size} Bytes."
+          else
+            echo "Build error, $filePath file does not exist."
+            exit 1
+          fi
       - uses: actions/upload-artifact@master
         if: env.UPLOAD_ARTIFACT == 'true'
         name: Upload artifact.
