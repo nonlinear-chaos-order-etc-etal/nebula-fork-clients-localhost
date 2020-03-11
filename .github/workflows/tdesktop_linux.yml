@@ -1,3 +1,6 @@
+# script to build https://github.com/telegramdesktop/tdesktop/commit/dc8abc74ed4d72a73315550b91283ff1f2e44199 patched by Nebula patches
+# https://github.com/telegramdesktop/tdesktop/blob/dc8abc74ed4d72a73315550b91283ff1f2e44199/docs/building-cmake.md
+
 name: tdesktop_linux.
 
 on:
@@ -24,11 +27,11 @@ jobs:
 
     env:
       GIT: "https://github.com"
-      QT: "5_12_5"
-      QT_PREFIX: "/usr/local/desktop-app/Qt-5.12.5"
-      OPENSSL_VER: "1_1_1"
-      OPENSSL_PREFIX: "/usr/local/desktop-app/openssl-1.1.1"
-      CMAKE_VER: "3.16.3"
+      QT: "5_6_2"
+      QT_PREFIX: "/usr/local/desktop-app/Qt-5.6.2"
+      OPENSSL_VER: "1_0_1-stable"
+      OPENSSL_PREFIX: "/usr/local/desktop-app/openssl-1_0_1-stable"
+      CMAKE_VER: "3"
       UPLOAD_ARTIFACT: "true"
       ONLY_CACHE: "false"
       MANUAL_CACHING: "6"
@@ -42,21 +45,6 @@ jobs:
             echo ::set-env name=CURRENT_REPO_NAME::${GITHUB_REPOSITORY##*/}
             echo ::set-env name=REPO_TDESKTOP_NAME::tdesktop
             
-
-      - name: Clone tdesktop.
-      #  uses: actions/checkout@master
-      #  with:
-      #    repository: nebula-chat-fork-originals/tdesktop
-      #    submodules: recursive
-      #    ref: 'dc8abc74ed4d72a73315550b91283ff1f2e44199'
-        shell: bash
-        run: |
-          sudo apt-get update
-          sudo apt-get install software-properties-common -y && apt-get install -y git
-          echo "pwd: `pwd`"
-          cd ..
-          git clone --recursive https://github.com/nebula-chat-fork-originals/tdesktop.git
-
 
       - name: Disable man for further package installs.
         run: |
@@ -73,511 +61,215 @@ jobs:
       - name: First set up.
         shell: bash
         run: |
-          cd ..
-          pwd
-          echo ::set-env name=HomePath::`pwd`
-          ls -la
-          ls -la $REPO_TDESKTOP_NAME
-          mv $REPO_TDESKTOP_NAME temp
-          mkdir $REPO_TDESKTOP_NAME
-          ln -s $REPO_TDESKTOP_NAME $CURRENT_REPO_NAME
-          mv temp $REPO_TDESKTOP_NAME/$REPO_TDESKTOP_NAME
-          cd $REPO_TDESKTOP_NAME
+            echo "pwd: `pwd`"
 
-          sudo apt-get install software-properties-common -y && \
-          sudo apt-get install git libexif-dev liblzma-dev libz-dev libssl-dev \
-          libgtk2.0-dev libice-dev libsm-dev libicu-dev libdrm-dev dh-autoreconf \
-          autoconf automake build-essential libxml2-dev libass-dev libfreetype6-dev \
-          libgpac-dev libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev \
-          libvorbis-dev libxcb1-dev libxcb-image0-dev libxcb-shm0-dev \
-          libxcb-xfixes0-dev libxcb-keysyms1-dev libxcb-icccm4-dev libatspi2.0-dev \
-          libxcb-render-util0-dev libxcb-util0-dev libxcb-xkb-dev libxrender-dev \
-          libasound-dev libpulse-dev libxcb-sync0-dev libxcb-randr0-dev libegl1-mesa-dev \
-          libx11-xcb-dev libffi-dev libncurses5-dev pkg-config texi2html bison yasm \
-          zlib1g-dev xutils-dev python-xcbgen chrpath gperf wget -y --force-yes && \
-          sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y && \
-          sudo apt-get update && \
-          sudo apt-get install gcc-8 g++-8 -y && \
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 60 && \
-          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 60 && \
-          sudo update-alternatives --config gcc && \
-          sudo add-apt-repository --remove ppa:ubuntu-toolchain-r/test -y
+            sudo apt-get install software-properties-common
+            sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+            sudo add-apt-repository ppa:george-edison55/cmake-3.x
+            sudo apt-get update
+            sudo apt-get install gcc-7 g++-7 cmake
+            sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60
+            sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 60
+            sudo add-apt-repository --remove ppa:ubuntu-toolchain-r/test
+            sudo add-apt-repository --remove ppa:george-edison55/cmake-3.x
+            sudo apt-get install git libexif-dev liblzma-dev libz-dev libssl-dev libappindicator-dev libunity-dev libicu-dev libdee-dev libdrm-dev dh-autoreconf autoconf automake build-essential libass-dev libfreetype6-dev libgpac-dev libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-image0-dev libxcb-shm0-dev libxcb-xfixes0-dev libxcb-keysyms1-dev libxcb-icccm4-dev libxcb-render-util0-dev libxcb-util0-dev libxrender-dev libasound-dev libpulse-dev libxcb-sync0-dev libxcb-randr0-dev libx11-xcb-dev libffi-dev libncurses5-dev pkg-config texi2html zlib1g-dev yasm cmake xutils-dev bison python-xcbgen
 
-          gcc --version
+            echo ::set-env name=MAKE_THREADS_CNT::-j$(nproc)
 
-          gcc --version > CACHE_KEY.txt
-          echo $MANUAL_CACHING >> CACHE_KEY.txt
-          if [ "$AUTO_CACHING" == "1" ]; then
-            thisFile=$REPO_TDESKTOP_NAME/.github/workflows/linux.yml
-            echo `md5sum $thisFile | cut -c -32` >> CACHE_KEY.txt
-          fi
-          md5cache=$(md5sum CACHE_KEY.txt | cut -c -32)
-          echo ::set-env name=CACHE_KEY::$md5cache
+            cd ..
+            echo ::set-env name=HomePath::`pwd`
 
-          mkdir -p Libraries
-          cd Libraries
-          echo ::set-env name=LibrariesPath::`pwd`
+            echo "pwd: `pwd`"
+            git clone --recursive https://github.com/nebula-chat-fork-originals/tdesktop.git
+            cd tdesktop
+            echo "checking out tdesktop commit for Nebula patches"
+            git checkout dc8abc74ed4d72a73315550b91283ff1f2e44199
+            cd ..
 
-      - name: Range-v3.
-        if: env.DEBUG_YML == 'false'
-        run: |
-          echo "Find necessary branch from doc."
-          cloneRange=$(grep -A 1 "range-v3" $REPO_TDESKTOP_NAME/$DOC_PATH | sed -n 1p)
-          cd $LibrariesPath
-          echo $cloneRange
-          eval $cloneRange
+            mkdir Libraries
+            cd Libraries
+            echo ::set-env name=LibrariesPath::`pwd`
 
-      - name: Patches.
-        if: env.DEBUG_YML == 'false'
-        run: |
-          echo "Find necessary commit from doc."
-          checkoutCommit=$(grep -A 1 "cd patches" $REPO_TDESKTOP_NAME/$DOC_PATH | sed -n 2p)
-          cd $LibrariesPath
-          git clone $GIT/desktop-app/patches.git
-          cd patches
-          eval $checkoutCommit
+            git clone https://github.com/ericniebler/range-v3
 
-      - name: CMake.
-        if: env.DEBUG_YML == 'false'
-        run: |
-          cd $LibrariesPath
+            git clone https://github.com/telegramdesktop/zlib.git
+            cd zlib
+            ./configure
+            make $MAKE_THREADS_CNT
+            sudo make install
+            cd ..
 
-          file=cmake-$CMAKE_VER-Linux-x86_64.sh
-          wget $GIT/Kitware/CMake/releases/download/v$CMAKE_VER/$file
-          sudo mkdir /opt/cmake
-          sudo sh $file --prefix=/opt/cmake --skip-license
-          sudo ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
+            git clone https://github.com/xiph/opus
+            cd opus
+            git checkout v1.2.1
+            ./autogen.sh
+            ./configure
+            make $MAKE_THREADS_CNT
+            sudo make install
+            cd ..
 
-          cmake --version
+            git clone https://github.com/01org/libva.git
+            cd libva
+            ./autogen.sh --enable-static
+            make $MAKE_THREADS_CNT
+            sudo make install
+            cd ..
 
-      - name: Opus cache.
-        id: cache-opus
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.LibrariesPath }}/opus
-          key: ${{ runner.OS }}-opus-${{ env.CACHE_KEY }}
-      - name: Opus.
-        if: steps.cache-opus.outputs.cache-hit != 'true' && env.DEBUG_YML == 'false'
-        run: |
-          cd $LibrariesPath
+            git clone git://anongit.freedesktop.org/vdpau/libvdpau
+            cd libvdpau
+            ./autogen.sh --enable-static
+            make $MAKE_THREADS_CNT
+            sudo make install
+            cd ..
 
-          git clone -b v1.3 --depth=1 $GIT/xiph/opus
-          cd opus
-          ./autogen.sh
-          ./configure
-          make -j$(nproc)
-      - name: Opus install.
-        if: env.DEBUG_YML == 'false'
-        run: |
-          cd $LibrariesPath/opus
-          sudo make install
+            git clone https://github.com/FFmpeg/FFmpeg.git ffmpeg
+            cd ffmpeg
+            git checkout release/3.4
 
-      - name: Libva.
-        if: env.DEBUG_YML == 'false'
-        run: |
-          cd $LibrariesPath
+            ./configure --prefix=/usr/local --disable-programs --disable-doc --disable-everything --enable-protocol=file --enable-libopus --enable-decoder=aac --enable-decoder=aac_latm --enable-decoder=aasc --enable-decoder=flac --enable-decoder=gif --enable-decoder=h264 --enable-decoder=h264_vdpau --enable-decoder=mp1 --enable-decoder=mp1float --enable-decoder=mp2 --enable-decoder=mp2float --enable-decoder=mp3 --enable-decoder=mp3adu --enable-decoder=mp3adufloat --enable-decoder=mp3float --enable-decoder=mp3on4 --enable-decoder=mp3on4float --enable-decoder=mpeg4 --enable-decoder=mpeg4_vdpau --enable-decoder=msmpeg4v2 --enable-decoder=msmpeg4v3 --enable-decoder=opus --enable-decoder=pcm_alaw --enable-decoder=pcm_alaw_at --enable-decoder=pcm_f32be --enable-decoder=pcm_f32le --enable-decoder=pcm_f64be --enable-decoder=pcm_f64le --enable-decoder=pcm_lxf --enable-decoder=pcm_mulaw --enable-decoder=pcm_mulaw_at --enable-decoder=pcm_s16be --enable-decoder=pcm_s16be_planar --enable-decoder=pcm_s16le --enable-decoder=pcm_s16le_planar --enable-decoder=pcm_s24be --enable-decoder=pcm_s24daud --enable-decoder=pcm_s24le --enable-decoder=pcm_s24le_planar --enable-decoder=pcm_s32be --enable-decoder=pcm_s32le --enable-decoder=pcm_s32le_planar --enable-decoder=pcm_s64be --enable-decoder=pcm_s64le --enable-decoder=pcm_s8 --enable-decoder=pcm_s8_planar --enable-decoder=pcm_u16be --enable-decoder=pcm_u16le --enable-decoder=pcm_u24be --enable-decoder=pcm_u24le --enable-decoder=pcm_u32be --enable-decoder=pcm_u32le --enable-decoder=pcm_u8 --enable-decoder=pcm_zork --enable-decoder=vorbis --enable-decoder=wavpack --enable-decoder=wmalossless --enable-decoder=wmapro --enable-decoder=wmav1 --enable-decoder=wmav2 --enable-decoder=wmavoice --enable-encoder=libopus --enable-hwaccel=h264_vaapi --enable-hwaccel=h264_vdpau --enable-hwaccel=mpeg4_vaapi --enable-hwaccel=mpeg4_vdpau --enable-parser=aac --enable-parser=aac_latm --enable-parser=flac --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=mpegaudio --enable-parser=opus --enable-parser=vorbis --enable-demuxer=aac --enable-demuxer=flac --enable-demuxer=gif --enable-demuxer=h264 --enable-demuxer=mov --enable-demuxer=mp3 --enable-demuxer=ogg --enable-demuxer=wav --enable-muxer=ogg --enable-muxer=opus
 
-          git clone $GIT/01org/libva.git
-          cd libva
-          ./autogen.sh --enable-static
-          make -j$(nproc)
-          sudo make install
-          cd ..
-          rm -rf libva
+            make $MAKE_THREADS_CNT
+            sudo make install
+            cd ..
 
-      - name: Libvdpau.
-        if: env.DEBUG_YML == 'false'
-        run: |
-          cd $LibrariesPath
+            git clone https://git.assembla.com/portaudio.git
+            cd portaudio
+            git checkout 396fe4b669
+            ./configure
+            make $MAKE_THREADS_CNT
+            sudo make install
+            cd ..
 
-          git clone -b libvdpau-1.2 --depth=1 https://gitlab.freedesktop.org/vdpau/libvdpau.git
-          cd libvdpau
-          ./autogen.sh --enable-static
-          make -j$(nproc)
-          sudo make install
-          cd ..
-          rm -rf libvdpau
+            git clone git://repo.or.cz/openal-soft.git
+            cd openal-soft
+            git checkout openal-soft-1.19.1
+            cd build
+            if [ `uname -p` == "i686" ]; then
+            cmake -D LIBTYPE:STRING=STATIC -D ALSOFT_UTILS:BOOL=OFF ..
+            else
+            cmake -D LIBTYPE:STRING=STATIC ..
+            fi
+            make $MAKE_THREADS_CNT
+            sudo make install
+            cd ../..
 
-      - name: FFmpeg cache.
-        id: cache-ffmpeg
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.LibrariesPath }}/ffmpeg-cache
-          key: ${{ runner.OS }}-ffmpeg-${{ env.CACHE_KEY }}
-      - name: FFmpeg build.
-        if: steps.cache-ffmpeg.outputs.cache-hit != 'true' && env.DEBUG_YML == 'false'
-        run: |
-          cd $LibrariesPath
+            git clone https://github.com/openssl/openssl
+            cd openssl
+            git checkout OpenSSL_1_0_1-stable
+            ./config
+            make $MAKE_THREADS_CNT
+            sudo make install
+            cd ..
 
-          git clone --branch release/3.4 $GIT/FFmpeg/FFmpeg ffmpeg
-          cd ffmpeg
-          ./configure --prefix=$LibrariesPath/ffmpeg-cache \
-          --enable-protocol=file --enable-libopus \
-          --disable-programs \
-          --disable-doc \
-          --disable-network \
-          --disable-everything \
-          --enable-hwaccel=h264_vaapi \
-          --enable-hwaccel=h264_vdpau \
-          --enable-hwaccel=mpeg4_vaapi \
-          --enable-hwaccel=mpeg4_vdpau \
-          --enable-decoder=aac \
-          --enable-decoder=aac_at \
-          --enable-decoder=aac_fixed \
-          --enable-decoder=aac_latm \
-          --enable-decoder=aasc \
-          --enable-decoder=alac \
-          --enable-decoder=alac_at \
-          --enable-decoder=flac \
-          --enable-decoder=gif \
-          --enable-decoder=h264 \
-          --enable-decoder=h264_vdpau \
-          --enable-decoder=hevc \
-          --enable-decoder=mp1 \
-          --enable-decoder=mp1float \
-          --enable-decoder=mp2 \
-          --enable-decoder=mp2float \
-          --enable-decoder=mp3 \
-          --enable-decoder=mp3adu \
-          --enable-decoder=mp3adufloat \
-          --enable-decoder=mp3float \
-          --enable-decoder=mp3on4 \
-          --enable-decoder=mp3on4float \
-          --enable-decoder=mpeg4 \
-          --enable-decoder=mpeg4_vdpau \
-          --enable-decoder=msmpeg4v2 \
-          --enable-decoder=msmpeg4v3 \
-          --enable-decoder=opus \
-          --enable-decoder=pcm_alaw \
-          --enable-decoder=pcm_alaw_at \
-          --enable-decoder=pcm_f32be \
-          --enable-decoder=pcm_f32le \
-          --enable-decoder=pcm_f64be \
-          --enable-decoder=pcm_f64le \
-          --enable-decoder=pcm_lxf \
-          --enable-decoder=pcm_mulaw \
-          --enable-decoder=pcm_mulaw_at \
-          --enable-decoder=pcm_s16be \
-          --enable-decoder=pcm_s16be_planar \
-          --enable-decoder=pcm_s16le \
-          --enable-decoder=pcm_s16le_planar \
-          --enable-decoder=pcm_s24be \
-          --enable-decoder=pcm_s24daud \
-          --enable-decoder=pcm_s24le \
-          --enable-decoder=pcm_s24le_planar \
-          --enable-decoder=pcm_s32be \
-          --enable-decoder=pcm_s32le \
-          --enable-decoder=pcm_s32le_planar \
-          --enable-decoder=pcm_s64be \
-          --enable-decoder=pcm_s64le \
-          --enable-decoder=pcm_s8 \
-          --enable-decoder=pcm_s8_planar \
-          --enable-decoder=pcm_u16be \
-          --enable-decoder=pcm_u16le \
-          --enable-decoder=pcm_u24be \
-          --enable-decoder=pcm_u24le \
-          --enable-decoder=pcm_u32be \
-          --enable-decoder=pcm_u32le \
-          --enable-decoder=pcm_u8 \
-          --enable-decoder=pcm_zork \
-          --enable-decoder=vorbis \
-          --enable-decoder=wavpack \
-          --enable-decoder=wmalossless \
-          --enable-decoder=wmapro \
-          --enable-decoder=wmav1 \
-          --enable-decoder=wmav2 \
-          --enable-decoder=wmavoice \
-          --enable-encoder=libopus \
-          --enable-parser=aac \
-          --enable-parser=aac_latm \
-          --enable-parser=flac \
-          --enable-parser=h264 \
-          --enable-parser=hevc \
-          --enable-parser=mpeg4video \
-          --enable-parser=mpegaudio \
-          --enable-parser=opus \
-          --enable-parser=vorbis \
-          --enable-demuxer=aac \
-          --enable-demuxer=flac \
-          --enable-demuxer=gif \
-          --enable-demuxer=h264 \
-          --enable-demuxer=hevc \
-          --enable-demuxer=m4v \
-          --enable-demuxer=mov \
-          --enable-demuxer=mp3 \
-          --enable-demuxer=ogg \
-          --enable-demuxer=wav \
-          --enable-muxer=ogg \
-          --enable-muxer=opus
+            git clone https://github.com/xkbcommon/libxkbcommon.git
+            cd libxkbcommon
+            ./autogen.sh --disable-x11
+            make $MAKE_THREADS_CNT
+            sudo make install
+            cd ..
 
-          make -j$(nproc)
-          sudo make install
-          cd ..
-          rm -rf ffmpeg
-      - name: FFmpeg install.
-        if: env.DEBUG_YML == 'false'
-        run: |
-          cd $LibrariesPath
-          #List of files from cmake/external/ffmpeg/CMakeLists.txt.
-          copyLib() {
-            mkdir -p ffmpeg/$1
-            yes | cp -i ffmpeg-cache/lib/$1.a ffmpeg/$1/$1.a
-          }
-          copyLib libavformat
-          copyLib libavcodec
-          copyLib libswresample
-          copyLib libswscale
-          copyLib libavutil
+            git clone git://code.qt.io/qt/qt5.git qt5_6_2
+            cd qt5_6_2
+            perl init-repository --module-subset=qtbase,qtimageformats
+            git checkout v5.6.2
+            cd qtimageformats && git checkout v5.6.2 && cd ..
+            cd qtbase && git checkout v5.6.2 && cd ..
+            cd qtbase && git apply ../../../tdesktop/Telegram/Patches/qtbase_5_6_2.diff && cd ..
+            cd qtbase/src/plugins/platforminputcontexts
+            git clone https://github.com/telegramdesktop/fcitx.git
+            git clone https://github.com/telegramdesktop/hime.git
+            cd ../../../..
 
-          sudo cp -R ffmpeg-cache/. /usr/local/
+            ./configure -prefix "/usr/local/tdesktop/Qt-5.6.2" -release -force-debug-info -opensource -confirm-license -qt-zlib -qt-libpng -qt-libjpeg -qt-freetype -qt-harfbuzz -qt-pcre -qt-xcb -qt-xkbcommon-x11 -no-opengl -no-gtkstyle -static -openssl-linked -nomake examples -nomake tests
 
-      - name: PortAudio.
-        if: env.DEBUG_YML == 'false'
-        run: |
-          cd $LibrariesPath
+            make $MAKE_THREADS_CNT
+            sudo make install
+            cd ..
 
-          git clone https://git.assembla.com/portaudio.git
-          cd portaudio
-          git checkout 396fe4b669
-          ./configure
-          make -j$(nproc)
-          sudo make install
-          cd ..
-          rm -rf portaudio
+            git clone https://chromium.googlesource.com/external/gyp
+            cd gyp
+            git checkout 702ac58e47
+            git apply ../../tdesktop/Telegram/Patches/gyp.diff
+            cd ..
 
-      - name: OpenAL Soft.
-        if: env.DEBUG_YML == 'false'
-        run: |
-          cd $LibrariesPath
+            git clone https://chromium.googlesource.com/breakpad/breakpad
+            cd breakpad
+            git checkout bc8fb886
+            git clone https://chromium.googlesource.com/linux-syscall-support src/third_party/lss
+            cd src/third_party/lss
+            git checkout a91633d1
+            cd ../../..
+            ./configure
+            make $MAKE_THREADS_CNT
+            sudo make install
+            cd src/tools
+            ../../../gyp/gyp  --depth=. --generator-output=.. -Goutput_dir=../out tools.gyp --format=cmake
+            cd ../../out/Default
+            cmake .
+            make $MAKE_THREADS_CNT dump_syms
+            cd ../../..
 
-          git clone -b openal-soft-1.19.1 --depth=1 $GIT/kcat/openal-soft.git
-          cd openal-soft/build
-          cmake -D LIBTYPE:STRING=STATIC ..
-          make -j$(nproc)
-          sudo make install
-          cd -
-          rm -rf openal-soft
+            echo "gcc --version: `gcc --version`"
+            echo "cmake --version: `cmake --version`"
 
-      - name: OpenSSL cache.
-        id: cache-openssl
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.LibrariesPath }}/openssl-cache
-          key: ${{ runner.OS }}-${{ env.OPENSSL_VER }}-${{ env.CACHE_KEY }}
-      - name: OpenSSL build.
-        if: steps.cache-openssl.outputs.cache-hit != 'true' && env.DEBUG_YML == 'false'
-        run: |
-          cd $LibrariesPath
-
-          opensslDir=openssl_${OPENSSL_VER}
-          git clone -b OpenSSL_${OPENSSL_VER}-stable --depth=1 \
-            $GIT/openssl/openssl $opensslDir
-          cd $opensslDir
-          ./config --prefix=$LibrariesPath/openssl-cache
-          make -j$(nproc)
-          sudo make install_sw
-          cd ..
-          rm -rf $opensslDir
-      - name: OpenSSL install.
-        if: env.DEBUG_YML == 'false'
-        run: |
-          cd $LibrariesPath
-          sudo mkdir -p $OPENSSL_PREFIX
-          sudo cp -R openssl-cache/. $OPENSSL_PREFIX/
-
-      - name: Libxkbcommon.
-        if: env.DEBUG_YML == 'false'
-        run: |
-          cd $LibrariesPath
-
-          git clone -b xkbcommon-0.8.4 --depth=1 $GIT/xkbcommon/libxkbcommon.git
-          cd libxkbcommon
-          ./autogen.sh
-          make -j$(nproc)
-          sudo make install
-          cd ..
-          rm -rf libxkbcommon
-
-      - name: Libwayland.
-        if: env.DEBUG_YML == 'false'
-        run: |
-          cd $LibrariesPath
-
-          git clone -b 1.16 https://gitlab.freedesktop.org/wayland/wayland
-          cd wayland
-          ./autogen.sh --enable-static --disable-documentation
-          make -j$(nproc)
-          sudo make install
-          cd ..
-          rm -rf wayland
-
-      - name: Qt 5.12.5 cache.
-        if: env.DEBUG_YML == 'false'
-        id: cache-qt
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.LibrariesPath }}/qt-cache
-          key: ${{ runner.OS }}-qt-${{ env.CACHE_KEY }}-${{ hashFiles('**/qtbase_5_12_5.diff') }}
-      - name: Qt 5.12.5 build.
-        if: steps.cache-qt.outputs.cache-hit != 'true' && env.DEBUG_YML == 'false'
-        run: |
-          cd $LibrariesPath
-
-          git clone -b v5.12.5 --depth=1 git://code.qt.io/qt/qt5.git qt_${QT}
-          cd qt_${QT}
-          perl init-repository --module-subset=qtbase,qtwayland,qtimageformats,qtsvg
-          git submodule update qtbase qtwayland qtimageformats qtsvg
-          cd qtbase
-          git apply ../../patches/qtbase_${QT}.diff
-          cd src/plugins/platforminputcontexts
-          git clone $GIT/desktop-app/fcitx.git
-          git clone $GIT/desktop-app/hime.git
-          git clone $GIT/desktop-app/nimf.git
-          cd ../../../..
-
-          ./configure -prefix "$LibrariesPath/qt-cache" \
-          -release \
-          -force-debug-info \
-          -opensource \
-          -confirm-license \
-          -qt-zlib \
-          -qt-libpng \
-          -qt-libjpeg \
-          -qt-harfbuzz \
-          -qt-pcre \
-          -qt-xcb \
-          -system-freetype \
-          -fontconfig \
-          -no-gtk \
-          -static \
-          -dbus-runtime \
-          -openssl-linked \
-          -I "$OPENSSL_PREFIX/include" OPENSSL_LIBS="$OPENSSL_PREFIX/lib/libssl.a $OPENSSL_PREFIX/lib/libcrypto.a -ldl -lpthread" \
-          -nomake examples \
-          -nomake tests
-
-          make -j$(nproc)
-          sudo make install
-          cd ..
-          rm -rf qt_${QT}
-      - name: Qt 5.12.5 install.
-        if: env.DEBUG_YML == 'false'
-        run: |
-          cd $LibrariesPath
-          sudo mkdir -p $QT_PREFIX
-          sudo cp -R qt-cache/. $QT_PREFIX/
-
-      - name: Breakpad cache.
-        if: env.DEBUG_YML == 'false'
-        id: cache-breakpad
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.LibrariesPath }}/breakpad-cache
-          key: ${{ runner.OS }}-breakpad-${{ env.CACHE_KEY }}
-      - name: Breakpad clone.
-        if: env.DEBUG_YML == 'false'
-        run: |
-          cd $LibrariesPath
-
-          git clone https://chromium.googlesource.com/breakpad/breakpad
-          cd breakpad
-          git checkout bc8fb886
-          git clone https://chromium.googlesource.com/linux-syscall-support src/third_party/lss
-          cd src/third_party/lss
-          git checkout a91633d1
-      - name: Breakpad build.
-        if: steps.cache-breakpad.outputs.cache-hit != 'true' && env.DEBUG_YML == 'false'
-        run: |
-          cd $LibrariesPath
-
-          BreakpadCache=$LibrariesPath/breakpad-cache
-
-          git clone https://chromium.googlesource.com/external/gyp
-          cd gyp
-          git checkout 9f2a7bb1
-          git apply ../patches/gyp.diff
-          cd ..
-
-          cd breakpad
-          ./configure --prefix=$BreakpadCache
-          make -j$(nproc)
-          sudo make install
-          cd src
-          rm -r testing
-          git clone $GIT/google/googletest testing
-          cd tools
-          sed -i 's/minidump_upload.m/minidump_upload.cc/' linux/tools_linux.gypi
-          ../../../gyp/gyp  --depth=. --generator-output=.. -Goutput_dir=../out tools.gyp --format=cmake
-          cd ../../out/Default
-          cmake .
-          make -j$(nproc) dump_syms
-
-          mv dump_syms $BreakpadCache/
-          cd ..
-          rm -rf gyp breakpad
-      - name: Breakpad install.
-        if: env.DEBUG_YML == 'false'
-        run: |
-          cd $LibrariesPath
-          sudo cp -R breakpad-cache/. /usr/local/
-          mkdir -p breakpad/out/Default/
-          cp breakpad-cache/dump_syms breakpad/out/Default/dump_syms
+            gcc --version > CACHE_KEY.txt
+            echo $MANUAL_CACHING >> CACHE_KEY.txt
+            if [ "$AUTO_CACHING" == "1" ]; then
+                thisFile=$REPO_TDESKTOP_NAME/.github/workflows/tdesktop_linux.yml
+                echo `md5sum $thisFile | cut -c -32` >> CACHE_KEY.txt
+            fi
+            md5cache=$(md5sum CACHE_KEY.txt | cut -c -32)
+            echo ::set-env name=CACHE_KEY::$md5cache
 
       - name: Telegram Desktop build.
         if: env.ONLY_CACHE == 'false'
         shell: bash
         run: |
-          cd $LibrariesPath
-          git clone $GIT/nebula-chat-fork/clients nebula-clients
-          
-          cd $HomePath/$REPO_TDESKTOP_NAME/$REPO_TDESKTOP_NAME/
-          
-          echo "checking out tdesktop commit for Nebula patches"
-          git checkout dc8abc74ed4d72a73315550b91283ff1f2e44199
-          
-          #echo "pwd: `pwd`"
-          #
-          #git submodule init
-          #git submodule sync
-          #git submodule update
-          
-          
-          echo "pwd: `pwd`"
-          echo "ls -lha"
-          ls -lha
-          echo "ls -lha $LibrariesPath/nebula-clients/tdesktop"
-          ls -lha $LibrariesPath/nebula-clients/tdesktop
-          
-          echo "patching"
-          
-          patch -p1 $LibrariesPath/nebula-clients/tdesktop/config.h.diff
-          patch -p1 $LibrariesPath/nebula-clients/tdesktop/dc_options.cpp.diff
-          patch -p1 $LibrariesPath/nebula-clients/tdesktop/launcher_linux.cpp.diff
-          patch -p1 $LibrariesPath/nebula-clients/tdesktop/launcher_mac.mm.diff
-          patch -p1 $LibrariesPath/nebula-clients/tdesktop/launcher_win.cpp.diff
-          patch -p1 $LibrariesPath/nebula-clients/tdesktop/telegram_mac.gypi.diff
-          patch -p1 $LibrariesPath/nebula-clients/tdesktop/update_checker.cpp.diff
-          
-          echo "patched"
-          
-          cd $HomePath/$REPO_TDESKTOP_NAME/$REPO_TDESKTOP_NAME/Telegram
+            cd $LibrariesPath
+            git clone $GIT/nebula-chat-fork/clients nebula-clients
+ 
+            echo "ls -lha $LibrariesPath/nebula-clients/tdesktop"
+            ls -lha $LibrariesPath/nebula-clients/tdesktop
 
-          DEFINE=""
-          if [ -n "${{ matrix.defines }}" ]; then
-            DEFINE="-D ${{ matrix.defines }}=ON"
-            echo Define from matrix: $DEFINE
-          fi
+            echo "patching"
 
-          ./configure.sh -D TDESKTOP_API_TEST=ON -D DESKTOP_APP_USE_PACKAGED=OFF $DEFINE
+            patch -p1 $LibrariesPath/nebula-clients/tdesktop/config.h.diff
+            patch -p1 $LibrariesPath/nebula-clients/tdesktop/dc_options.cpp.diff
+            patch -p1 $LibrariesPath/nebula-clients/tdesktop/launcher_linux.cpp.diff
+            patch -p1 $LibrariesPath/nebula-clients/tdesktop/launcher_mac.mm.diff
+            patch -p1 $LibrariesPath/nebula-clients/tdesktop/launcher_win.cpp.diff
+            patch -p1 $LibrariesPath/nebula-clients/tdesktop/telegram_mac.gypi.diff
+            patch -p1 $LibrariesPath/nebula-clients/tdesktop/update_checker.cpp.diff
 
-          cd ../out/Debug
-          make -j$(nproc)
-          strip -s bin/Telegram
+            echo "patched"
+
+            cd $HomePath/tdesktop/Telegram
+            #git submodule init
+            #git submodule sync
+            #git submodule update
+            #gyp/refresh.sh --api-id YOUR_API_ID --api-hash YOUR_API_HASH
+
+            DEFINE=""
+            if [ -n "${{ matrix.defines }}" ]; then
+                DEFINE="-D ${{ matrix.defines }}=ON"
+                echo Define from matrix: $DEFINE
+            fi
+
+            echo "building tdesktop"
+            cd $HomePath/tdesktop/out/Debug
+            make $MAKE_THREADS_CNT
+            echo "built ok"
+
+            #./configure.sh -D TDESKTOP_API_TEST=ON -D DESKTOP_APP_USE_PACKAGED=OFF $DEFINE
+
+            #cd ../out/Debug
+            #make -j$(nproc)
+            #strip -s bin/Telegram
 
       - name: Check.
         if: env.ONLY_CACHE == 'false'
         run: |
-          filePath="$REPO_TDESKTOP_NAME/out/Debug/bin/Telegram"
+          filePath="$HomePath/tdesktop/out/Debug/bin/Telegram"
           if test -f "$filePath"; then
             echo "Build successfully done! :)"
 
@@ -591,7 +283,7 @@ jobs:
       - name: Move artifact.
         if: env.UPLOAD_ARTIFACT == 'true'
         run: |
-          cd $REPO_TDESKTOP_NAME/out/Debug/bin
+          cd $HomePath/tdesktop/out/Debug/bin
           mkdir artifact
           mv Telegram artifact/
       - uses: actions/upload-artifact@master
@@ -599,4 +291,4 @@ jobs:
         name: Upload artifact.
         with:
           name: Telegram
-          path: ${{ env.REPO_TDESKTOP_NAME }}/out/Debug/bin/artifact/
+          path: ${{ env.HomePath }}/tdesktop/out/Debug/bin/artifact/
