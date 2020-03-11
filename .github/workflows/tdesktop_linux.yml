@@ -68,6 +68,8 @@ jobs:
                 eval "$cmd"
                 exit
             }
+            
+            goto label2
 
             echo "pwd: `pwd`"
 
@@ -243,6 +245,8 @@ jobs:
 
             echo "gcc --version: `gcc --version|head -1`"
             echo "cmake --version: `cmake --version`"
+            
+            label2 label
 
             gcc --version > CACHE_KEY.txt
             echo $MANUAL_CACHING >> CACHE_KEY.txt
@@ -257,6 +261,16 @@ jobs:
         if: env.ONLY_CACHE == 'false'
         shell: bash
         run: |
+            function goto
+            {
+                label=$1
+                cmd=$(sed -n "/$label label/{:a;n;p;ba};" $0 | grep -v ' label$')
+                eval "$cmd"
+                exit
+            }
+            
+            goto label3
+
             cd $LibrariesPath
             git clone $GIT/nebula-chat-fork/clients nebula-clients
  
@@ -305,6 +319,11 @@ jobs:
             cd $HomePath/tdesktop/out/Debug/
             #make -j$(nproc)
             strip -s Telegram
+            
+            label3 label
+            
+            cd $HomePath/tdesktop/out/Debug/
+            echo 123 > Telegram
 
       - name: Check.
         if: env.ONLY_CACHE == 'false'
