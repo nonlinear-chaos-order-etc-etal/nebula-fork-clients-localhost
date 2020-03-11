@@ -309,8 +309,11 @@ jobs:
       - name: Check.
         if: env.ONLY_CACHE == 'false'
         run: |
-          cd $HomePath
-          filePath="tdesktop/out/Debug/bin/Telegram"
+          cd $HomePath/tdesktop/out/Debug/
+          echo "pwd: `pwd`"
+          echo "ls -lhRa"
+          ls -lhRa
+          filePath="bin/Telegram"
           if test -f "$filePath"; then
             echo "Build successfully done! :)"
 
