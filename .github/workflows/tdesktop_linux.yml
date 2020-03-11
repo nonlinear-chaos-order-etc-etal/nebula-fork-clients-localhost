@@ -170,6 +170,7 @@ jobs:
 
             git clone https://github.com/xkbcommon/libxkbcommon.git
             cd libxkbcommon
+            git checkout 293c704cbedd95779351a7295683159e93e12de7
             ./autogen.sh --disable-x11
             make $MAKE_THREADS_CNT
             sudo make install
