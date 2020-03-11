@@ -302,18 +302,18 @@ jobs:
 
             #./configure.sh -D TDESKTOP_API_TEST=ON -D DESKTOP_APP_USE_PACKAGED=OFF $DEFINE
 
-            #cd ../out/Debug
+            cd $HomePath/tdesktop/out/Debug/
             #make -j$(nproc)
-            #strip -s bin/Telegram
+            strip -s Telegram
 
       - name: Check.
         if: env.ONLY_CACHE == 'false'
         run: |
           cd $HomePath/tdesktop/out/Debug/
           echo "pwd: `pwd`"
-          echo "ls -lhRa"
-          ls -lhRa
-          filePath="bin/Telegram"
+          #echo "ls -lhRa"
+          #ls -lhRa
+          filePath="Telegram"
           if test -f "$filePath"; then
             echo "Build successfully done! :)"
 
@@ -327,7 +327,7 @@ jobs:
       - name: Move artifact.
         if: env.UPLOAD_ARTIFACT == 'true'
         run: |
-          cd $HomePath/tdesktop/out/Debug/bin
+          cd $HomePath/tdesktop/out/Debug/
           mkdir artifact
           mv Telegram artifact/
       - uses: actions/upload-artifact@master
@@ -335,4 +335,4 @@ jobs:
         name: Upload artifact.
         with:
           name: Telegram
-          path: ${{ env.HomePath }}/tdesktop/out/Debug/bin/artifact/
+          path: ${{ env.HomePath }}/tdesktop/out/Debug/artifact/
