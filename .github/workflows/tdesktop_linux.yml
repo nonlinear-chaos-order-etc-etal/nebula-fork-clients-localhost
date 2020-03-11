@@ -222,13 +222,17 @@ jobs:
             ./configure
             make $MAKE_THREADS_CNT
             sudo make install
-            cd src/tools
+            cd src
+            rm -r testing
+            git clone https://github.com/google/googletest testing
+            cd tools
+            echo "old tools.gyp: [`cat tools.gyp`]"
+            sed -i "s/gypi...$/gypi'],'cxxflags':['-std=c++11'],/" tools.gyp 
+            echo "new tools.gyp: [`cat tools.gyp`]"
+
             ../../../gyp/gyp  --depth=. --generator-output=.. -Goutput_dir=../out tools.gyp --format=cmake
             cd ../../out/Default
-            echo "flags: [`cat CMakeFiles/common.dir/flags.make`]"
-            mkdir -pv CMakeFiles/common.dir
-            echo "CXX_FLAGS = -std=c++11" > CMakeFiles/common.dir/flags.make
-            echo "flags: [`cat CMakeFiles/common.dir/flags.make`]"
+            echo "gcc --version: `gcc --version|head -1`"
             cmake .
             make $MAKE_THREADS_CNT dump_syms
             cd ../../..
