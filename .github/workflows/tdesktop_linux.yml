@@ -257,7 +257,7 @@ jobs:
 
             label2 label
 
-
+            echo done
       - name: Telegram Desktop build.
         if: env.ONLY_CACHE == 'false'
         shell: bash
