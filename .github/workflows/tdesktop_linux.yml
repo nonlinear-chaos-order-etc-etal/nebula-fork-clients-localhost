@@ -532,11 +532,11 @@ jobs:
           
           cd $HomePath/$REPO_TDESKTOP_NAME/$REPO_TDESKTOP_NAME/
           
-          echo "skipped: checking out commit id for Nebula patches"
-          echo "skipped: git checkout dc8abc74ed4d72a73315550b91283ff1f2e44199"
+          echo "checking out tdesktop commit for Nebula patches"
+          git checkout dc8abc74ed4d72a73315550b91283ff1f2e44199
           
-          echo "pwd: `pwd`"
-          
+          #echo "pwd: `pwd`"
+          #
           #git submodule init
           #git submodule sync
           #git submodule update
