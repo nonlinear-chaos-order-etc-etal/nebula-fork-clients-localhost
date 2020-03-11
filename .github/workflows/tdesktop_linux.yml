@@ -94,11 +94,12 @@ jobs:
             echo ::set-env name=HomePath::`pwd`
 
             echo "pwd: `pwd`"
-            git clone --origin dc8abc74ed4d72a73315550b91283ff1f2e44199 --recursive https://github.com/nebula-chat-fork-originals/tdesktop.git 
-            #cd tdesktop
-            #echo "checking out tdesktop commit for Nebula patches"
-            #git checkout dc8abc74ed4d72a73315550b91283ff1f2e44199
-            #cd ..
+            git clone --recursive https://github.com/nebula-chat-fork-originals/tdesktop.git 
+            cd tdesktop
+            echo "checking out tdesktop commit for Nebula patches"
+            git checkout dc8abc74ed4d72a73315550b91283ff1f2e44199
+            git reset --hard
+            cd ..
 
             mkdir Libraries
             cd Libraries
@@ -271,10 +272,13 @@ jobs:
 
             echo "patched"
 
-            cd $HomePath/tdesktop/Telegram
-            #git submodule init
-            #git submodule sync
-            #git submodule update
+            cd $HomePath/tdesktop/
+            
+            git submodule init
+            git submodule sync
+            git submodule update
+            
+            cd Telegram
 
             # test credentials specified at tdesktop/Telegram/gyp/generate.py
             # Test credentials are documented with:
