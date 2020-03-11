@@ -34,6 +34,7 @@ jobs:
       MANUAL_CACHING: "6"
       DOC_PATH: "docs/building-cmake.md"
       AUTO_CACHING: "1"
+      DEBUG_YML: "true"
 
     steps:
       - name: Get repository name.
@@ -397,7 +398,7 @@ jobs:
           path: ${{ env.LibrariesPath }}/qt-cache
           key: ${{ runner.OS }}-qt-${{ env.CACHE_KEY }}-${{ hashFiles('**/qtbase_5_12_5.diff') }}
       - name: Qt 5.12.5 build.
-        if: steps.cache-qt.outputs.cache-hit != 'true'
+        if: steps.cache-qt.outputs.cache-hit != 'true' && env.DEBUG_YML == 'false'
         run: |
           cd $LibrariesPath
 
