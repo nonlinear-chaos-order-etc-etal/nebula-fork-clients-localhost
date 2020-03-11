@@ -405,6 +405,7 @@ jobs:
           rm -rf wayland
 
       - name: Qt 5.12.5 cache.
+        if: env.DEBUG_YML == 'false'
         id: cache-qt
         uses: actions/cache@v1
         with:
