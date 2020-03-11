@@ -440,18 +440,21 @@ jobs:
           cd ..
           rm -rf qt_${QT}
       - name: Qt 5.12.5 install.
+        if: env.DEBUG_YML == 'false'
         run: |
           cd $LibrariesPath
           sudo mkdir -p $QT_PREFIX
           sudo cp -R qt-cache/. $QT_PREFIX/
 
       - name: Breakpad cache.
+        if: env.DEBUG_YML == 'false'
         id: cache-breakpad
         uses: actions/cache@v1
         with:
           path: ${{ env.LibrariesPath }}/breakpad-cache
           key: ${{ runner.OS }}-breakpad-${{ env.CACHE_KEY }}
       - name: Breakpad clone.
+        if: env.DEBUG_YML == 'false'
         run: |
           cd $LibrariesPath
 
@@ -462,7 +465,7 @@ jobs:
           cd src/third_party/lss
           git checkout a91633d1
       - name: Breakpad build.
-        if: steps.cache-breakpad.outputs.cache-hit != 'true'
+        if: steps.cache-breakpad.outputs.cache-hit != 'true' && env.DEBUG_YML == 'false'
         run: |
           cd $LibrariesPath
 
@@ -492,6 +495,7 @@ jobs:
           cd ..
           rm -rf gyp breakpad
       - name: Breakpad install.
+        if: env.DEBUG_YML == 'false'
         run: |
           cd $LibrariesPath
           sudo cp -R breakpad-cache/. /usr/local/
