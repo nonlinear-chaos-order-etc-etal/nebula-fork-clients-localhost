@@ -346,5 +346,5 @@ jobs:
         if: env.UPLOAD_ARTIFACT == 'true'
         name: Upload artifact.
         with:
-          name: Telegram
+          name: Telegram.gz
           path: ${{ env.HomePath }}/tdesktop/out/Debug/artifact/
