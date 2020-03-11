@@ -1,4 +1,4 @@
-[![GitHub release](https://img.shields.io/github/release/nebula-chat-fork/clients.svg?label=latest%20release)](https://github.com/nebula-chat-fork/clients/releases/latest)
+![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/nebula-chat-fork/clients?include_prereleases&label=latest-release&sort=semver)
 [![License](https://img.shields.io/github/license/nebula-chat-fork/clients.svg)](https://github.com/nebula-chat-fork/clients/blob/master/LICENSE)
 
 # clients
@@ -14,10 +14,12 @@ All client's signIn (signOut) default verify code is *12345*
 
 [tdesktop for NebulaChat](tdesktop)
 
-**TBD (Currently) unsupported systems:**
+**Supported systems:**
 
-* TBD GNU/Linux - [![Build Status - Travis](https://travis-ci.com/nebula-chat-fork/clients.svg?branch=master)](https://travis-ci.com/nebula-chat-fork/clients) [![Build Status](https://github.com/nebula-chat-fork/clients/workflows/tdesktop_linux./badge.svg)](https://github.com/nebula-chat-fork/clients/actions)
+* GNU/Linux - [![Build Status](https://github.com/nebula-chat-fork/clients/workflows/tdesktop_linux./badge.svg)](https://github.com/nebula-chat-fork/clients/actions)
  
+**Currently unsupported systems:**
+
 * TBD Windows - Build status
 * TBD Mac OS X - Build Status
 * TBD CentOS / Fedora / Mageia - Build Status
