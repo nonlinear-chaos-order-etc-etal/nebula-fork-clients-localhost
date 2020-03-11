@@ -229,7 +229,7 @@ jobs:
             echo "old tools.gyp: [`cat tools.gyp`]"
             sed -i "s/gypi...$/gypi'],'cxxflags':['-std=c++11'],/" tools.gyp 
             echo "new tools.gyp: [`cat tools.gyp`]"
-
+            sed -i 's/minidump_upload.m/minidump_upload.cc/' linux/tools_linux.gypi
             ../../../gyp/gyp  --depth=. --generator-output=.. -Goutput_dir=../out tools.gyp --format=cmake
             cd ../../out/Default
             echo "gcc --version: `gcc --version|head -1`"
@@ -237,7 +237,7 @@ jobs:
             make $MAKE_THREADS_CNT dump_syms
             cd ../../..
 
-            echo "gcc --version: `gcc --version`"
+            echo "gcc --version: `gcc --version|head -1`"
             echo "cmake --version: `cmake --version`"
 
             gcc --version > CACHE_KEY.txt
