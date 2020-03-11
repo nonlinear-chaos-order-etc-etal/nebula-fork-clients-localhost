@@ -44,11 +44,18 @@ jobs:
             
 
       - name: Clone tdesktop.
-        uses: actions/checkout@master
-        with:
-          repository: nebula-chat-fork-originals/tdesktop
-          submodules: recursive
-          ref: 'dc8abc74ed4d72a73315550b91283ff1f2e44199'
+      #  uses: actions/checkout@master
+      #  with:
+      #    repository: nebula-chat-fork-originals/tdesktop
+      #    submodules: recursive
+      #    ref: 'dc8abc74ed4d72a73315550b91283ff1f2e44199'
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install software-properties-common -y && apt-get install -y git
+          echo "pwd: `pwd`"
+          git clone --recursive git@github.com:nebula-chat-fork-originals/tdesktop.git
+
 
       - name: Disable man for further package installs.
         run: |
@@ -69,14 +76,13 @@ jobs:
           pwd
           echo ::set-env name=HomePath::`pwd`
           ls -la
-          ls -la $CURRENT_REPO_NAME
-          mv $CURRENT_REPO_NAME temp
+          ls -la $REPO_TDESKTOP_NAME
+          mv $REPO_TDESKTOP_NAME temp
           mkdir $REPO_TDESKTOP_NAME
           ln -s $REPO_TDESKTOP_NAME $CURRENT_REPO_NAME
           mv temp $REPO_TDESKTOP_NAME/$REPO_TDESKTOP_NAME
           cd $REPO_TDESKTOP_NAME
 
-          sudo apt-get update
           sudo apt-get install software-properties-common -y && \
           sudo apt-get install git libexif-dev liblzma-dev libz-dev libssl-dev \
           libgtk2.0-dev libice-dev libsm-dev libicu-dev libdrm-dev dh-autoreconf \
@@ -528,13 +534,14 @@ jobs:
           echo "skipped: checking out commit id for Nebula patches"
           echo "skipped: git checkout dc8abc74ed4d72a73315550b91283ff1f2e44199"
           
-          git submodule init
-          git submodule sync
-          git submodule update
+          echo "pwd: `pwd`"
+          
+          #git submodule init
+          #git submodule sync
+          #git submodule update
           
           
-          echo "pwd"
-          pwd
+          echo "pwd: `pwd`"
           echo "ls -lha"
           ls -lha
           echo "ls -lha $LibrariesPath/nebula-clients/tdesktop"
