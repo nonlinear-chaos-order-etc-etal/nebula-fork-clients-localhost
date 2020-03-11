@@ -61,6 +61,14 @@ jobs:
       - name: First set up.
         shell: bash
         run: |
+            function goto
+            {
+                label=$1
+                cmd=$(sed -n "/$label label/{:a;n;p;ba};" $0 | grep -v ' label$')
+                eval "$cmd"
+                exit
+            }
+
             echo "pwd: `pwd`"
 
             sudo apt-get install -y software-properties-common aptitude
@@ -95,6 +103,8 @@ jobs:
             mkdir Libraries
             cd Libraries
             echo ::set-env name=LibrariesPath::`pwd`
+
+            goto label1
 
             git clone https://github.com/ericniebler/range-v3
 
@@ -200,6 +210,8 @@ jobs:
             git apply ../../tdesktop/Telegram/Patches/gyp.diff
             cd ..
 
+            label1 label
+
             git clone https://chromium.googlesource.com/breakpad/breakpad
             cd breakpad
             git checkout bc8fb886
@@ -213,6 +225,7 @@ jobs:
             cd src/tools
             ../../../gyp/gyp  --depth=. --generator-output=.. -Goutput_dir=../out tools.gyp --format=cmake
             cd ../../out/Default
+            echo "flags: [`cat CMakeFiles/common.dir/flags.make`]"
             cmake .
             make $MAKE_THREADS_CNT dump_syms
             cd ../../..
