@@ -108,8 +108,6 @@ jobs:
             git reset --hard
             cd ..
 
-            goto label2_2
-
             cd Libraries
 
             git clone https://github.com/ericniebler/range-v3
@@ -256,8 +254,6 @@ jobs:
             md5cache=$(md5sum CACHE_KEY.txt | cut -c -32)
             echo ::set-env name=CACHE_KEY::$md5cache
             
-            label2_2 label
-
             echo done
       - name: Telegram Desktop build.
         if: env.ONLY_CACHE == 'false'
@@ -282,6 +278,9 @@ jobs:
             ls -lha $LibrariesPath/nebula-clients/tdesktop
 
             cd $HomePath/tdesktop/
+            git submodule init
+            git submodule sync
+            git submodule update
             
             echo "patching"
 
@@ -295,15 +294,9 @@ jobs:
 
             echo "patched"
             
-            echo "patched config.h: BOF`cat Telegram/SourceFiles/config.h`EOF"
+            echo "grep NEBULA Telegram/SourceFiles/config.h|wc -l: `grep NEBULA Telegram/SourceFiles/config.h|wc -l`"
 
-            cd $HomePath/tdesktop/
-            
-            git submodule init
-            git submodule sync
-            git submodule update
-            
-            cd Telegram
+            cd $HomePath/tdesktop/Telegram
 
             # test credentials specified at tdesktop/Telegram/gyp/generate.py
             # Test credentials are documented with:
@@ -326,6 +319,7 @@ jobs:
 
             cd $HomePath/tdesktop/out/Debug/
             #make -j$(nproc)
+            echo "strip -s Telegram"
             strip -s Telegram
             
             #mkdir -pv $HomePath/tdesktop/out/Debug/
