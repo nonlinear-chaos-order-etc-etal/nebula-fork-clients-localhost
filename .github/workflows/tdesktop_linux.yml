@@ -62,7 +62,6 @@ jobs:
           p doc
 
       - name: First set up.
-        if: env.DEBUG_YML == 'false'
         shell: bash
         run: |
           cd ..
