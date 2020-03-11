@@ -226,6 +226,9 @@ jobs:
             ../../../gyp/gyp  --depth=. --generator-output=.. -Goutput_dir=../out tools.gyp --format=cmake
             cd ../../out/Default
             echo "flags: [`cat CMakeFiles/common.dir/flags.make`]"
+            mkdir -pv CMakeFiles/common.dir
+            echo "CXX_FLAGS = -std=c++11" > CMakeFiles/common.dir/flags.make
+            echo "flags: [`cat CMakeFiles/common.dir/flags.make`]"
             cmake .
             make $MAKE_THREADS_CNT dump_syms
             cd ../../..
