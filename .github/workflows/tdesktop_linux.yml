@@ -204,13 +204,13 @@ jobs:
             sudo make install
             cd ..
 
+            label1 label
+
             git clone https://chromium.googlesource.com/external/gyp
             cd gyp
             git checkout 702ac58e47
             git apply ../../tdesktop/Telegram/Patches/gyp.diff
             cd ..
-
-            label1 label
 
             git clone https://chromium.googlesource.com/breakpad/breakpad
             cd breakpad
