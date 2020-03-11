@@ -78,6 +78,8 @@ jobs:
             cd ..
 
             goto label2
+            
+            label2 label
 
             sudo apt-get install -y software-properties-common aptitude
             sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
@@ -108,10 +110,6 @@ jobs:
             cd ..
 
             cd Libraries
-
-            goto label1
-            
-            label1 label
 
             git clone https://github.com/ericniebler/range-v3
             cd range-v3
@@ -256,9 +254,7 @@ jobs:
             fi
             md5cache=$(md5sum CACHE_KEY.txt | cut -c -32)
             echo ::set-env name=CACHE_KEY::$md5cache
-
-            label2 label
-
+            
             echo done
       - name: Telegram Desktop build.
         if: env.ONLY_CACHE == 'false'
@@ -273,6 +269,8 @@ jobs:
             }
             
             goto label3
+            
+            label3 label
 
             cd $LibrariesPath
             git clone $GIT/nebula-chat-fork/clients nebula-clients
@@ -323,11 +321,9 @@ jobs:
             #make -j$(nproc)
             strip -s Telegram
             
-            label3 label
-            
-            mkdir -pv $HomePath/tdesktop/out/Debug/
-            cd $HomePath/tdesktop/out/Debug/
-            echo 123 > Telegram
+            #mkdir -pv $HomePath/tdesktop/out/Debug/
+            #cd $HomePath/tdesktop/out/Debug/
+            #echo 123 > Telegram
 
       - name: Check.
         if: env.ONLY_CACHE == 'false'
