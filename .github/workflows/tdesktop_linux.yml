@@ -105,6 +105,8 @@ jobs:
             echo ::set-env name=LibrariesPath::`pwd`
 
             goto label1
+            
+            label1 label
 
             git clone https://github.com/ericniebler/range-v3
 
@@ -203,8 +205,6 @@ jobs:
             make $MAKE_THREADS_CNT
             sudo make install
             cd ..
-
-            label1 label
 
             git clone https://chromium.googlesource.com/external/gyp
             cd gyp
