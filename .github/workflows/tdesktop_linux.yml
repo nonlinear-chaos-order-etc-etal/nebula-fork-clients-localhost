@@ -282,6 +282,8 @@ jobs:
             echo "ls -lha $LibrariesPath/nebula-clients/tdesktop"
             ls -lha $LibrariesPath/nebula-clients/tdesktop
 
+            cd $HomePath/tdesktop/
+            
             echo "patching"
 
             git apply $LibrariesPath/nebula-clients/tdesktop/config.h.diff
