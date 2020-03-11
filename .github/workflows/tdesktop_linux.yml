@@ -94,11 +94,11 @@ jobs:
             echo ::set-env name=HomePath::`pwd`
 
             echo "pwd: `pwd`"
-            git clone --recursive https://github.com/nebula-chat-fork-originals/tdesktop.git
-            cd tdesktop
-            echo "checking out tdesktop commit for Nebula patches"
-            git checkout dc8abc74ed4d72a73315550b91283ff1f2e44199
-            cd ..
+            git clone --origin dc8abc74ed4d72a73315550b91283ff1f2e44199 --recursive https://github.com/nebula-chat-fork-originals/tdesktop.git 
+            #cd tdesktop
+            #echo "checking out tdesktop commit for Nebula patches"
+            #git checkout dc8abc74ed4d72a73315550b91283ff1f2e44199
+            #cd ..
 
             mkdir Libraries
             cd Libraries
