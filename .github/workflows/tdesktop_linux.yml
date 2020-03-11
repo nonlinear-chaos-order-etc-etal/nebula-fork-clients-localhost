@@ -54,7 +54,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install software-properties-common -y && apt-get install -y git
           echo "pwd: `pwd`"
-          git clone --recursive git@github.com:nebula-chat-fork-originals/tdesktop.git
+          cd ..
+          git clone --recursive https://github.com/nebula-chat-fork-originals/tdesktop.git
 
 
       - name: Disable man for further package installs.
