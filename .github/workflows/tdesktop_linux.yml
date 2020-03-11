@@ -98,10 +98,7 @@ jobs:
             libxcb-sync0-dev libxcb-randr0-dev libx11-xcb-dev libffi-dev libncurses5-dev pkg-config texi2html \
             zlib1g-dev yasm cmake xutils-dev bison python-xcbgen
 
-            goto label2_2
-
             echo ::set-env name=MAKE_THREADS_CNT::-j$(nproc)
-
 
             echo "pwd: `pwd`"
             git clone --recursive https://github.com/nebula-chat-fork-originals/tdesktop.git 
@@ -110,6 +107,8 @@ jobs:
             git checkout dc8abc74ed4d72a73315550b91283ff1f2e44199
             git reset --hard
             cd ..
+
+            goto label2_2
 
             cd Libraries
 
