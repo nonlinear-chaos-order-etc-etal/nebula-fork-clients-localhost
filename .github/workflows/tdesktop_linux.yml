@@ -110,6 +110,9 @@ jobs:
             label1 label
 
             git clone https://github.com/ericniebler/range-v3
+            cd range-v3
+            git checkout a2bf5d0596dd2ffc75c2623b62d6226915609622
+            cd ..
 
             git clone https://github.com/telegramdesktop/zlib.git
             cd zlib
