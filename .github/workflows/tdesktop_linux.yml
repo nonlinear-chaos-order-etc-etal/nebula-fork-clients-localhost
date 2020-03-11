@@ -328,11 +328,13 @@ jobs:
         if: env.UPLOAD_ARTIFACT == 'true'
         run: |
           cd $HomePath/tdesktop/out/Debug/
-          mkdir artifact
-          mv -v Telegram artifact/
+          
+          # https://github.com/actions/upload-artifact/issues/43#issuecomment-572258312
+          mkdir $GITHUB_WORKSPACE/artifact
+          mv -v Telegram $GITHUB_WORKSPACE/artifact/
       - uses: actions/upload-artifact@master
         if: env.UPLOAD_ARTIFACT == 'true'
         name: Upload artifact.
         with:
           name: Telegram
-          path: ${{ env.HomePath }}/tdesktop/out/Debug/artifact
+          path: artifact
