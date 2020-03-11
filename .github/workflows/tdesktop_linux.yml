@@ -62,6 +62,7 @@ jobs:
           p doc
 
       - name: First set up.
+        if: env.DEBUG_YML == 'false'
         shell: bash
         run: |
           cd ..
@@ -111,6 +112,7 @@ jobs:
           echo ::set-env name=LibrariesPath::`pwd`
 
       - name: Range-v3.
+        if: env.DEBUG_YML == 'false'
         run: |
           echo "Find necessary branch from doc."
           cloneRange=$(grep -A 1 "range-v3" $REPO_TDESKTOP_NAME/$DOC_PATH | sed -n 1p)
@@ -119,6 +121,7 @@ jobs:
           eval $cloneRange
 
       - name: Patches.
+        if: env.DEBUG_YML == 'false'
         run: |
           echo "Find necessary commit from doc."
           checkoutCommit=$(grep -A 1 "cd patches" $REPO_TDESKTOP_NAME/$DOC_PATH | sed -n 2p)
@@ -128,6 +131,7 @@ jobs:
           eval $checkoutCommit
 
       - name: CMake.
+        if: env.DEBUG_YML == 'false'
         run: |
           cd $LibrariesPath
 
@@ -146,7 +150,7 @@ jobs:
           path: ${{ env.LibrariesPath }}/opus
           key: ${{ runner.OS }}-opus-${{ env.CACHE_KEY }}
       - name: Opus.
-        if: steps.cache-opus.outputs.cache-hit != 'true'
+        if: steps.cache-opus.outputs.cache-hit != 'true' && env.DEBUG_YML == 'false'
         run: |
           cd $LibrariesPath
 
@@ -156,11 +160,13 @@ jobs:
           ./configure
           make -j$(nproc)
       - name: Opus install.
+        if: env.DEBUG_YML == 'false'
         run: |
           cd $LibrariesPath/opus
           sudo make install
 
       - name: Libva.
+        if: env.DEBUG_YML == 'false'
         run: |
           cd $LibrariesPath
 
@@ -173,6 +179,7 @@ jobs:
           rm -rf libva
 
       - name: Libvdpau.
+        if: env.DEBUG_YML == 'false'
         run: |
           cd $LibrariesPath
 
@@ -191,7 +198,7 @@ jobs:
           path: ${{ env.LibrariesPath }}/ffmpeg-cache
           key: ${{ runner.OS }}-ffmpeg-${{ env.CACHE_KEY }}
       - name: FFmpeg build.
-        if: steps.cache-ffmpeg.outputs.cache-hit != 'true'
+        if: steps.cache-ffmpeg.outputs.cache-hit != 'true' && env.DEBUG_YML == 'false'
         run: |
           cd $LibrariesPath
 
@@ -301,6 +308,7 @@ jobs:
           cd ..
           rm -rf ffmpeg
       - name: FFmpeg install.
+        if: env.DEBUG_YML == 'false'
         run: |
           cd $LibrariesPath
           #List of files from cmake/external/ffmpeg/CMakeLists.txt.
@@ -317,6 +325,7 @@ jobs:
           sudo cp -R ffmpeg-cache/. /usr/local/
 
       - name: PortAudio.
+        if: env.DEBUG_YML == 'false'
         run: |
           cd $LibrariesPath
 
@@ -330,6 +339,7 @@ jobs:
           rm -rf portaudio
 
       - name: OpenAL Soft.
+        if: env.DEBUG_YML == 'false'
         run: |
           cd $LibrariesPath
 
@@ -348,7 +358,7 @@ jobs:
           path: ${{ env.LibrariesPath }}/openssl-cache
           key: ${{ runner.OS }}-${{ env.OPENSSL_VER }}-${{ env.CACHE_KEY }}
       - name: OpenSSL build.
-        if: steps.cache-openssl.outputs.cache-hit != 'true'
+        if: steps.cache-openssl.outputs.cache-hit != 'true' && env.DEBUG_YML == 'false'
         run: |
           cd $LibrariesPath
 
@@ -362,12 +372,14 @@ jobs:
           cd ..
           rm -rf $opensslDir
       - name: OpenSSL install.
+        if: env.DEBUG_YML == 'false'
         run: |
           cd $LibrariesPath
           sudo mkdir -p $OPENSSL_PREFIX
           sudo cp -R openssl-cache/. $OPENSSL_PREFIX/
 
       - name: Libxkbcommon.
+        if: env.DEBUG_YML == 'false'
         run: |
           cd $LibrariesPath
 
@@ -380,6 +392,7 @@ jobs:
           rm -rf libxkbcommon
 
       - name: Libwayland.
+        if: env.DEBUG_YML == 'false'
         run: |
           cd $LibrariesPath
 
@@ -509,7 +522,7 @@ jobs:
           cd $LibrariesPath
           git clone $GIT/nebula-chat-fork/clients nebula-clients
           
-          cd $HomePath/$REPO_TDESKTOP_NAME/
+          cd $HomePath/$REPO_TDESKTOP_NAME/$REPO_TDESKTOP_NAME/
           
           echo "checking out commit id for Nebula patches"
           git checkout dc8abc74ed4d72a73315550b91283ff1f2e44199
@@ -538,7 +551,7 @@ jobs:
           
           echo "patched"
           
-          cd $REPO_TDESKTOP_NAME/Telegram
+          cd $HomePath/$REPO_TDESKTOP_NAME/$REPO_TDESKTOP_NAME/Telegram
 
           DEFINE=""
           if [ -n "${{ matrix.defines }}" ]; then
