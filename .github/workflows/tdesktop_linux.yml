@@ -499,6 +499,7 @@ jobs:
 
       - name: Telegram Desktop build.
         if: env.ONLY_CACHE == 'false'
+        shell: bash
         run: |
           cd $LibrariesPath
           git clone $GIT/nebula-chat-fork/clients nebula-clients
