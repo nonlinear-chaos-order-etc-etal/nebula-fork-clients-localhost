@@ -347,4 +347,4 @@ jobs:
         name: Upload artifact.
         with:
           name: Telegram.gz
-          path: ${{ env.HomePath }}/tdesktop/out/Debug/artifact/
+          path: ${{ env.HomePath }}/tdesktop/out/Debug/artifact
