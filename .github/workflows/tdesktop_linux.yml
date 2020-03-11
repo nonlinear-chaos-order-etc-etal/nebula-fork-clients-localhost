@@ -48,6 +48,7 @@ jobs:
         with:
           repository: nebula-chat-fork-originals/tdesktop
           submodules: recursive
+          ref: 'dc8abc74ed4d72a73315550b91283ff1f2e44199'
 
       - name: Disable man for further package installs.
         run: |
@@ -524,8 +525,8 @@ jobs:
           
           cd $HomePath/$REPO_TDESKTOP_NAME/$REPO_TDESKTOP_NAME/
           
-          echo "checking out commit id for Nebula patches"
-          git checkout dc8abc74ed4d72a73315550b91283ff1f2e44199
+          echo "skipped: checking out commit id for Nebula patches"
+          echo "skipped: git checkout dc8abc74ed4d72a73315550b91283ff1f2e44199"
           
           git submodule init
           git submodule sync
