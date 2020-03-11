@@ -294,6 +294,8 @@ jobs:
             git apply $LibrariesPath/nebula-clients/tdesktop/update_checker.cpp.diff
 
             echo "patched"
+            
+            echo "patched config.h: BOF`cat Telegram/SourceFiles/config.h`EOF"
 
             cd $HomePath/tdesktop/
             
