@@ -25,6 +25,6 @@ If you want to connect to your own server, you can modify the following code:
 tdesktop/config.h.diff
 L24
 
-+#define NEBULAIM_DC_IP4   "47.103.102.219"
++#define NEBULAIM_DC_IP4   "127.0.0.1"
 
 ```
