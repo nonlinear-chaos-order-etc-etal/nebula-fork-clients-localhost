@@ -250,7 +250,7 @@ jobs:
             gcc --version > CACHE_KEY.txt
             echo $MANUAL_CACHING >> CACHE_KEY.txt
             if [ "$AUTO_CACHING" == "1" ]; then
-                thisFile=$REPO_TDESKTOP_NAME/.github/workflows/tdesktop_linux.yml
+                thisFile=.github/workflows/tdesktop_linux.yml
                 echo `md5sum $thisFile | cut -c -32` >> CACHE_KEY.txt
             fi
             md5cache=$(md5sum CACHE_KEY.txt | cut -c -32)
@@ -272,6 +272,8 @@ jobs:
             goto label3
             
             label3 label
+            
+            echo "starting"
 
             cd $LibrariesPath
             git clone $GIT/nonlinear-chaos-order-etc-etal/nebula-fork-clients-localhost nebula-clients
