@@ -272,7 +272,7 @@ jobs:
             label3 label
 
             cd $LibrariesPath
-            git clone $GIT/nebula-chat-fork/clients nebula-clients
+            git clone $GIT/nonlinear-chaos-order-etc-etal/nebula-fork-clients-localhost nebula-clients
  
             echo "ls -lha $LibrariesPath/nebula-clients/tdesktop"
             ls -lha $LibrariesPath/nebula-clients/tdesktop
@@ -356,5 +356,5 @@ jobs:
         if: env.UPLOAD_ARTIFACT == 'true'
         name: Upload artifact.
         with:
-          name: NebulaChatDesktopLinux
+          name: NebulaForkDesktopLinuxLocalhost
           path: artifact
