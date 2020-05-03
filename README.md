@@ -1,5 +1,5 @@
-![tdesktop_linux.](https://github.com/nonlinear-chaos-order-etc-etal/nebula-fork-clients-localhost/workflows/tdesktop_linux./badge.svg) ![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/nebula-chat-fork/clients?include_prereleases&label=latest-release&sort=semver)
-[![License](https://img.shields.io/github/license/nebula-chat-fork/clients.svg)](https://github.com/nebula-chat-fork/clients/blob/master/LICENSE)
+![tdesktop_linux.](https://github.com/nonlinear-chaos-order-etc-etal/nebula-fork-clients-localhost/workflows/tdesktop_linux./badge.svg) ![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/nonlinear-chaos-order-etc-etal/nebula-fork-clients-localhost?include_prereleases&label=latest-release&sort=semver)
+[![License](https://img.shields.io/github/license/nonlinear-chaos-order-etc-etal/nebula-fork-clients-localhost.svg)](https://github.com/nonlinear-chaos-order-etc-etal/nebula-fork-clients-localhost/blob/master/LICENSE)
 
 # clients
 > [Telegram](https://telegram.org) clients patch by NebulaChat
@@ -16,7 +16,7 @@ All client's signIn (signOut) default verify code is *12345*
 
 **Supported systems:**
 
-* GNU/Linux - [![Build Status](https://github.com/nebula-chat-fork/clients/workflows/tdesktop_linux./badge.svg)](https://github.com/nebula-chat-fork/clients/actions)
+* GNU/Linux - [![Build Status](https://github.com/nonlinear-chaos-order-etc-etal/nebula-fork-clients-localhost/workflows/tdesktop_linux./badge.svg)](https://github.com/nonlinear-chaos-order-etc-etal/nebula-fork-clients-localhost/actions)
  
 **Currently unsupported systems:**
 
